@@ -1,5 +1,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3/SDL_opengles2.h> 
 #include <stdio.h>
 
 typedef struct {
@@ -15,6 +16,7 @@ typedef struct {
     void (*on_engine_close)(void*) ;  // call this method on engine before it closes 
     void (*on_engine_swap)(void*) ;  // call this method on engine before it closes 
     void* SceneManager ; // DATA CAN BE USED FOR THE GAME AND SET TO BE GLOBAL 
+    float clearColor_r ; float clearColor_g ; float clearColor_b ; 
 } Engine;
 
 bool engine_init(Engine* engine);
@@ -31,7 +33,9 @@ int main() {
         if (e.eventHandler != NULL) {
             e.eventHandler(&e) ; 
         }
+        glClear(GL_COLOR_BUFFER_BIT);
         if (e.draw != NULL) {
+
             e.draw(&e) ; 
         }
         if (e.on_engine_swap != NULL) {
@@ -57,9 +61,9 @@ bool engine_init(Engine* engine) {
     engine->window = NULL;
     engine->context = NULL;
     engine->run = 0 ; 
+    engine->clearColor_r = 1.0 ; engine->clearColor_g = 0.0 ; engine->clearColor_b = 0.0 ; 
     SDL_zero(engine->event);  /* SDL will copy this entire struct! Initialize to keep memory checkers happy. */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) return false;
-
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -95,9 +99,16 @@ void getevent(Engine* engine) {
         if (engine->event.type == SDL_EVENT_QUIT) {
             engine->run = 0;
         }
+        if (engine->event.type == SDL_EVENT_WINDOW_RESIZED) {
+            int w = engine->event.window.data1;
+            int h = engine->event.window.data2;
+            glViewport(0, 0, w, h);
+        }
     }
 }
 
 void engine_swap(Engine* engine){
+    glClearColor(engine->clearColor_r,engine->clearColor_g,engine->clearColor_b,1);
+    glClear(GL_COLOR_BUFFER_BIT);
     SDL_GL_SwapWindow(engine->window);
 }
