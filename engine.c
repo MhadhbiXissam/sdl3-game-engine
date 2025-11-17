@@ -7,23 +7,57 @@ typedef struct {
     SDL_GLContext context;
     Uint32 Windowflags;
     int width, height;
+    SDL_Event event; 
+    int run ; 
+    void (*eventHandler)(void*); /* Engine* */
+    void (*draw)(void*); /* Engine* */
+    void (*on_engine_started)(void*) ; // call this methode when window started 
+    void (*on_engine_close)(void*) ;  // call this method on engine before it closes 
+    void (*on_engine_swap)(void*) ;  // call this method on engine before it closes 
+    void* SceneManager ; // DATA CAN BE USED FOR THE GAME AND SET TO BE GLOBAL 
 } Engine;
 
 bool engine_init(Engine* engine);
 void engine_destroy(Engine* engine);
-
+void getevent(Engine* engine) ; 
+void engine_swap(Engine* engine) ; 
+// void HandleEvent(Engine* engine) ; 
 int main() {
     Engine e;
     if (!engine_init(&e)) return 1;
-    SDL_Delay(10000) ;
+    if (e.on_engine_started != NULL) {e.on_engine_started(&e) ; }
+    while(e.run){
+        getevent(&e) ; 
+        if (e.eventHandler != NULL) {
+            e.eventHandler(&e) ; 
+        }
+        if (e.draw != NULL) {
+            e.draw(&e) ; 
+        }
+        if (e.on_engine_swap != NULL) {
+            e.on_engine_swap(&e) ; 
+        }
+        engine_swap(&e) ; 
+    }
+    if (e.on_engine_close != NULL) {
+        e.on_engine_close(&e) ; 
+    }
     engine_destroy(&e);
     return 0;
 }
 
+
+
+
+
+
+
+
 bool engine_init(Engine* engine) {
     engine->window = NULL;
     engine->context = NULL;
-
+    engine->run = 0 ; 
+    SDL_zero(engine->event);  /* SDL will copy this entire struct! Initialize to keep memory checkers happy. */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) return false;
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
@@ -45,11 +79,25 @@ bool engine_init(Engine* engine) {
     if (!engine->context) return false;
 
     if (SDL_GL_MakeCurrent(engine->window, engine->context) < 0) return false;
-
+    engine->run = 1 ; 
     return true;
 }
 
 void engine_destroy(Engine* engine) {
     if (engine->context) SDL_GL_DestroyContext(engine->context);  // SDL3 name
     if (engine->window) SDL_DestroyWindow(engine->window);
+    SDL_Quit();
+}
+
+void getevent(Engine* engine) {
+    SDL_zero(engine->event); 
+    while (SDL_PollEvent(&(engine->event ))) {
+        if (engine->event.type == SDL_EVENT_QUIT) {
+            engine->run = 0;
+        }
+    }
+}
+
+void engine_swap(Engine* engine){
+    SDL_GL_SwapWindow(engine->window);
 }
