@@ -22,6 +22,17 @@ typedef struct {
 /*............................................................*/
 /*............................................................*/
 
+typedef struct {
+    
+} Scene ; 
+
+typedef struct {
+    
+} GameData ; 
+
+typedef struct {
+    GameData* data ; 
+} Game ; 
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -39,6 +50,7 @@ struct Engine {
     void (*on_engine_closed)(Engine*) ;  // call this method on engine before it closes 
     void (*on_engine_swaped)(Engine*) ;  // call this method before swap
     Vec4f clearcolor ; 
+    Game* game ; 
 } ;
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 bool engine_start(Engine* engine);
