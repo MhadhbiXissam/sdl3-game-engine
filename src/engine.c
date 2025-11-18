@@ -1,82 +1,9 @@
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
-#include <SDL3/SDL_opengles2.h> 
-#include <stdio.h>
+#include "engine.h"
 
-typedef struct {
-    SDL_Window* window;
-    SDL_GLContext context;
-    Uint32 Windowflags;
-    int width, height;
-    SDL_Event event; 
-    int run ; 
-    void (*eventHandler)(void*); /* Engine* */
-    void (*draw)(void*); /* Engine* */
-    void (*on_engine_started)(void*) ; // call this method when window started 
-    void (*on_engine_close)(void*) ;  // call this method on engine before it closes 
-    void (*on_engine_swap)(void*) ;  // call this method before swap
-    void* SceneManager ; // DATA CAN BE USED FOR THE GAME AND SET TO BE GLOBAL 
-    float clearColor_r ; float clearColor_g ; float clearColor_b ; 
-} Engine;
 
-bool engine_init(Engine* engine);
-void engine_destroy(Engine* engine);
-void getevent(Engine* engine) ; 
-void engine_swap(Engine* engine) ; 
 
-int main(int argc, char *argv[]){
-    Engine e;
-    
-    // Initialize all struct members to zero
-    SDL_zero(e);
-    
-    if (!engine_init(&e)) {
-        return 1;
-    }
-    
-    if (e.on_engine_started != NULL) {
-        e.on_engine_started(&e);
-    }
-    
-    while(e.run){
-        getevent(&e) ; 
-        if (e.eventHandler != NULL) {
-            e.eventHandler(&e) ; 
-        }
-        
-        glClear(GL_COLOR_BUFFER_BIT);
-        if (e.draw != NULL) {
-            e.draw(&e) ; 
-        }
-        if (e.on_engine_swap != NULL) {
-            e.on_engine_swap(&e) ; 
-        }
-        engine_swap(&e) ; 
-    }
-    
-    if (e.on_engine_close != NULL) {
-        e.on_engine_close(&e) ; 
-    }
-    
-    engine_destroy(&e);
-    return 0;
-}
 
 bool engine_init(Engine* engine) {
-    // Initialize all function pointers to NULL
-    engine->eventHandler = NULL;
-    engine->draw = NULL;
-    engine->on_engine_started = NULL;
-    engine->on_engine_close = NULL;
-    engine->on_engine_swap = NULL;
-    engine->SceneManager = NULL;
-    
-    engine->window = NULL;
-    engine->context = NULL;
-    engine->run = 0 ; 
-    engine->clearColor_r = 1.0f; 
-    engine->clearColor_g = 0.6f; 
-    engine->clearColor_b = 0.2f; 
     
     SDL_zero(engine->event);
 
@@ -165,4 +92,19 @@ void engine_swap(Engine* engine){
     glClearColor(engine->clearColor_r, engine->clearColor_g, engine->clearColor_b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     SDL_GL_SwapWindow(engine->window);
+}
+
+void engine_zero(Engine* engine){
+    engine->eventHandler = NULL;
+    engine->draw = NULL;
+    engine->on_engine_started = NULL;
+    engine->on_engine_close = NULL;
+    engine->on_engine_swap = NULL;
+    engine->SceneManager = NULL;
+    engine->window = NULL;
+    engine->context = NULL;
+    engine->run = 0 ; 
+    engine->clearColor_r = 1.0f; 
+    engine->clearColor_g = 0.6f; 
+    engine->clearColor_b = 0.2f; 
 }
