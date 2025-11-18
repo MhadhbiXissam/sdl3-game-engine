@@ -18,7 +18,7 @@ void on_engine_close(void* e){
 
 void on_engine_swap(void* e){
     Engine* engine = (Engine*)e ; 
-    Game* game = (Game*)(engine->Game);
+    Game* game = (Game*)(engine->game);
     game->score += 1 ; 
     printf("Called on_engine_swap function... \n") ; 
 }
@@ -26,7 +26,7 @@ void on_engine_swap(void* e){
 
 void eventHandler(void* e){
     Engine* engine = (Engine*)e ; 
-    Game* game = (Game*)(engine->Game);
+    Game* game = (Game*)(engine->game);
     if (engine->event.type){
         printf("recieved event %i\n" , engine->event.type) ; 
         printf("Current score %i " , game->score ); 

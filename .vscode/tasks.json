@@ -8,7 +8,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "gcc -w src/main.c src/engine.c -I. libs/libSDL3.a  -lm -lGLESv2 -o build/game.out && ./build/${fileBasenameNoExtension}.out ",
+            "command": "gcc -w src/main.c src/engine.c -I. libs/libSDL3.a  -lm -lGLESv2 -o build/game.out && build/game.out  ",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

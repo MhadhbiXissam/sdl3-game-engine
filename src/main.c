@@ -12,8 +12,8 @@ int main(int argc, char *argv[]){
     e.on_engine_swap = on_engine_swap ;
     e.on_engine_close = on_engine_close ; 
     e.eventHandler = eventHandler ; 
-    e.Game  = (Game*)malloc(sizeof(Game));
-    ((Game*)e.Game)->score = 0 ; 
+    e.game  = (Game*)malloc(sizeof(Game));
+    ((Game*)e.game)->score = 0 ; 
     if (!engine_init(&e)) {
         return 1;
     }
