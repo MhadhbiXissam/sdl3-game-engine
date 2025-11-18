@@ -16,7 +16,7 @@ typedef struct {
     void (*on_engine_started)(void*) ; // call this method when window started 
     void (*on_engine_close)(void*) ;  // call this method on engine before it closes 
     void (*on_engine_swap)(void*) ;  // call this method before swap
-    void* SceneManager ; // DATA CAN BE USED FOR THE GAME AND SET TO BE GLOBAL 
+    void* Game ; // DATA CAN BE USED FOR THE GAME AND SET TO BE GLOBAL 
     float clearColor_r ; float clearColor_g ; float clearColor_b ; 
 } Engine;
 

@@ -1,12 +1,14 @@
 {
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
+    //             "command": "gcc -w ${file} src/engine.c -I. libs/libSDL3.a  -lm -lGLESv2 -o build/${fileBasenameNoExtension}.out && ./build/${fileBasenameNoExtension}.out ",
+
     "version": "2.0.0",
     "tasks": [
         {
             "label": "build",
             "type": "shell",
-            "command": "gcc -w ${file} src/engine.c -I. libs/libSDL3.a  -lm -lGLESv2 -o build/${fileBasenameNoExtension}.out && ./build/${fileBasenameNoExtension}.out ",
+            "command": "gcc -w src/main.c src/engine.c -I. libs/libSDL3.a  -lm -lGLESv2 -o build/game.out && ./build/${fileBasenameNoExtension}.out ",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

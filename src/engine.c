@@ -100,7 +100,7 @@ void engine_zero(Engine* engine){
     engine->on_engine_started = NULL;
     engine->on_engine_close = NULL;
     engine->on_engine_swap = NULL;
-    engine->SceneManager = NULL;
+    engine->Game = NULL;
     engine->window = NULL;
     engine->context = NULL;
     engine->run = 0 ; 
