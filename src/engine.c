@@ -89,8 +89,6 @@ void getevent(Engine* engine) {
 }
 
 void engine_swap(Engine* engine){
-    glClearColor(engine->clearColor_r, engine->clearColor_g, engine->clearColor_b, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
     SDL_GL_SwapWindow(engine->window);
 }
 
