@@ -8,8 +8,7 @@ typedef struct {
 // this methode used to draw opengles stuffs 
 void draw(void* e){
     Engine* engine = (Engine*)e ; 
-    glClearColor(engine->clearColor_r, engine->clearColor_g, engine->clearColor_b, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+
     printf("Called draw function ... \n") ; 
 }
 

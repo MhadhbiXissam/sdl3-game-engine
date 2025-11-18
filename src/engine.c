@@ -2,9 +2,16 @@
 
 
 
+Engine create_engine(){
+    // Initialize all struct members to zero
+    Engine e ; 
+    e.run(&e) ; 
+
+}
+
 
 bool engine_init(Engine* engine) {
-    
+    SDL_zero(*engine) ; 
     SDL_zero(engine->event);
 
     // Initialize SDL with error checking
@@ -105,4 +112,39 @@ void engine_zero(Engine* engine){
     engine->clearColor_r = 1.0f; 
     engine->clearColor_g = 0.6f; 
     engine->clearColor_b = 0.2f; 
+}
+
+
+int engine_run(Engine* engine) {
+
+    if (!engine_start(engine)) {
+        return 1;
+    }
+    if (engine->on_engine_started ) {
+        engine->on_engine_started(engine);
+    }
+    
+    while(engine->run){
+        getevent(engine) ; 
+        if (engine->eventHandler) {
+            engine->eventHandler(engine) ; 
+        }
+        
+        glClearColor(engine->clearColor_r, engine->clearColor_g, engine->clearColor_b, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        if (engine->draw) {
+            engine->draw(engine) ; 
+        }
+        if (engine->on_engine_swap) {
+            engine->on_engine_swap(engine) ; 
+        }
+        engine_swap(engine) ; 
+    }
+    
+    if (engine->on_engine_close) {
+        engine->on_engine_close(engine) ; 
+    }
+    
+    engine_destroy(engine);
+    return 0;
 }

@@ -23,11 +23,11 @@ typedef struct {
 
 
 
-void engine_zero(Engine* engine) ; 
-bool engine_init(Engine* engine);
+
+bool engine_start(Engine* engine);
 void engine_destroy(Engine* engine);
 void getevent(Engine* engine) ; 
 void engine_swap(Engine* engine) ; 
-
+int engine_run(Engine* engine) ; 
 
 
