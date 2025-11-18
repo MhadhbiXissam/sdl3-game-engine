@@ -7,13 +7,7 @@ int main(int argc, char *argv[]){
     Engine e;
     // Initialize all struct members to zero
     engine_zero(&e);
-    e.draw = draw ;
-    e.on_engine_started = on_engine_started ; 
-    e.on_engine_swap = on_engine_swap ;
-    e.on_engine_close = on_engine_close ; 
-    e.eventHandler = eventHandler ; 
-    e.game  = (Game*)malloc(sizeof(Game));
-    ((Game*)e.game)->score = 0 ; 
+    engine_create(&e) ; 
     if (!engine_init(&e)) {
         return 1;
     }

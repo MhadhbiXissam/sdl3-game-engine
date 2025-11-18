@@ -4,6 +4,7 @@ typedef struct {
     
 } Game; 
 
+
 // this methode used to draw opengles stuffs 
 void draw(void* e){
     printf("Called draw function ... \n") ; 
@@ -36,4 +37,16 @@ void eventHandler(void* e){
         printf("recieved event %i\n" , engine->event.type) ; 
         printf("Current score %i " , game->score ); 
     }
+}
+
+
+void engine_create(void* e) {
+    Engine* engine = (Engine*)e ; 
+    engine->draw = draw ;
+    engine->on_engine_started = on_engine_started ; 
+    engine->on_engine_swap = on_engine_swap ;
+    engine->on_engine_close = on_engine_close ; 
+    engine->eventHandler = eventHandler ; 
+    engine->game  = (Game*)malloc(sizeof(Game));
+    ((Game*)(engine->game))->score = 0 ; 
 }
