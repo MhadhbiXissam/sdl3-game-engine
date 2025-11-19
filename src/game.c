@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+ 
 
 
 typedef struct {
     int id ; 
+
     
 }GameState ; 
 
@@ -17,7 +19,6 @@ GameState* on_game_started(){
     printf("game loaded...\n");
     state->id = 120 ;
     return state ; 
-
 }
 
 
