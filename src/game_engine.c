@@ -32,7 +32,7 @@ void game_engine_logHandler(void *userdata, int category, SDL_LogPriority priori
    const char *level;
    const char *color;
    switch (priority) {
-       case SDL_LOG_PRIORITY_VERBOSE: level = "VERBOSE"; color = CYAN; break;
+       case SDL_LOG_PRIORITY_VERBOSE: level = "VERBOSE"; color = BLUE; break;
        case SDL_LOG_PRIORITY_DEBUG:   level = "DEBUG";   color = BLUE; break;
        case SDL_LOG_PRIORITY_INFO:    level = "INFO";    color = GREEN; break;
        case SDL_LOG_PRIORITY_WARN:    level = "WARN";    color = YELLOW; break;
