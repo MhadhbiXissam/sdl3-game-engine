@@ -14,7 +14,6 @@ GameState* on_game_started(){
     printf("game loaded...\n");
     state->id = 120 ;
     return state;
-
 }
 
 
@@ -35,6 +34,6 @@ void on_game_update(GameState* state ){
 
 void on_game_finalize(void* state ){
     free(state) ; 
-    printf("game final "); 
+    printf("game final \n"); 
 }
 
