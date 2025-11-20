@@ -87,6 +87,94 @@ void game_engine_logHandler(void *userdata, int category, SDL_LogPriority priori
    Game Camera class 
 ---------------------------*/
 
+typedef enum { CAM_PERSPECTIVE, CAM_ORTHOGRAPHIC } CameraType;
+
+typedef struct {
+    Vec3f position;
+    Quatf rotation;
+    CameraType type;
+
+    // Perspective properties
+    float fov;      // vertical field of view in radians
+    float aspect;   // width / height
+    float nearZ;
+    float farZ;
+
+    // Orthographic properties
+    float ortho_scale;  // zoom factor
+} Camera;
+
+// ======== Camera Functions ========
+static inline Camera camera_create() {
+    Camera cam;
+    cam.position = (Vec3f){0, 0, 0};
+    cam.rotation = quat_identity();
+    cam.type = CAM_PERSPECTIVE;
+    cam.fov = M_PI/4.0f;  // 45 degrees
+    cam.aspect = 16.0f/9.0f;
+    cam.nearZ = 0.1f;
+    cam.farZ = 1000.0f;
+    cam.ortho_scale = 1.0f;
+    return cam;
+}
+
+// Get forward, right, up directions from rotation
+static inline Vec3f camera_forward(Camera *cam) {
+    Mat4f rot_mat = quat_to_mat4f(cam->rotation);
+    return vec3f_normalize((Vec3f){-rot_mat.m[2][0], -rot_mat.m[2][1], -rot_mat.m[2][2]});
+}
+
+static inline Vec3f camera_right(Camera *cam) {
+    Mat4f rot_mat = quat_to_mat4f(cam->rotation);
+    return vec3f_normalize((Vec3f){rot_mat.m[0][0], rot_mat.m[0][1], rot_mat.m[0][2]});
+}
+
+static inline Vec3f camera_up(Camera *cam) {
+    Mat4f rot_mat = quat_to_mat4f(cam->rotation);
+    return vec3f_normalize((Vec3f){rot_mat.m[1][0], rot_mat.m[1][1], rot_mat.m[1][2]});
+}
+
+// Move camera in local space
+static inline void camera_translate(Camera *cam, Vec3f delta) {
+    Vec3f right = camera_right(cam);
+    Vec3f up = camera_up(cam);
+    Vec3f forward = camera_forward(cam);
+    cam->position = vec3f_add(cam->position,
+        vec3f_add(
+            vec3f_add(vec3f_scale(right, delta.x),
+                      vec3f_scale(up, delta.y)),
+            vec3f_scale(forward, delta.z)
+        )
+    );
+}
+
+// Rotate camera around local axes
+static inline void camera_rotate(Camera *cam, float pitch, float yaw, float roll) {
+    Quatf q_pitch = quat_from_axis_angle((Vec3f){1,0,0}, pitch);
+    Quatf q_yaw   = quat_from_axis_angle((Vec3f){0,1,0}, yaw);
+    Quatf q_roll  = quat_from_axis_angle((Vec3f){0,0,1}, roll);
+    cam->rotation = quat_mul(q_yaw, quat_mul(q_pitch, quat_mul(q_roll, cam->rotation)));
+}
+
+// Get view matrix
+static inline Mat4f camera_view_matrix(Camera *cam) {
+    Vec3f center = vec3f_add(cam->position, camera_forward(cam));
+    return mat4f_look_at(cam->position, center, camera_up(cam));
+}
+
+// Get projection matrix
+static inline Mat4f camera_projection_matrix(Camera *cam) {
+    if(cam->type == CAM_PERSPECTIVE)
+        return mat4f_perspective(cam->fov, cam->aspect, cam->nearZ, cam->farZ);
+    else {
+        float half_scale = cam->ortho_scale * 0.5f;
+        float right = half_scale * cam->aspect;
+        float left = -right;
+        float top = half_scale;
+        float bottom = -top;
+        return mat4f_orthographic(left, right, bottom, top, cam->nearZ, cam->farZ);
+    }
+}
 
 /*---------------------------
    Game Function Pointers

@@ -20,6 +20,10 @@ void (*raise_window)(void) = NULL;
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 typedef struct {
+    void* camera ; 
+} Camera ;
+
+typedef struct {
     int h , w  ; 
     int c ; 
 }Game ; 
@@ -38,7 +42,6 @@ void on_game_created(void* game ){
 }
 
 void on_game_init(void* game){
-
     printf("Game intialzed ..."); 
     maximize_window();
 }
