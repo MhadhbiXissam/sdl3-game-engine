@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+typedef struct Engine Engine; // forward declaration
 
-
-
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+void (*get_window_size_ptr)(int*, int*) = NULL;
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct {
     int id ; 
 }Game ; 
@@ -22,8 +24,8 @@ void on_game_init(void* game){
     printf("Game intialzed ..."); 
 }
 
-void on_game_event(void* game , int typ ){
-    printf("recieved event id = ...%i.\n",typ); 
+void on_game_event(void* game){
+
 }
 
 
@@ -31,6 +33,9 @@ void on_game_update(void* game ){
     Game* self = (Game*)game ; 
     self->id += 1 ;
     printf("game updating game.id...%i.\n",self->id); 
+    int w , h ; 
+    get_window_size_ptr(&w,&h);
+    printf("the window size : w = ...%i.\n",w); 
 }
 
 

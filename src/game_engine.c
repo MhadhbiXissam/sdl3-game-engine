@@ -7,7 +7,7 @@
 #include <time.h>
 #include <stdbool.h>
 // Macro shortcuts for SDL logging
-#define LOG_LEVEL SDL_LOG_PRIORITY_VERBOSE
+#define LOG_LEVEL SDL_LOG_PRIORITY_DEBUG
 #define printInfo(msg, ...)  SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
 #define printWarn(msg, ...)  SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
 #define printError(msg, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
@@ -87,12 +87,13 @@ typedef void (*ON_GAME_INIT)(void*);
 static ON_GAME_INIT PROC_ON_GAME_INIT ; 
 typedef void (*ON_GAME_UPDATE)(void*); 
 static ON_GAME_UPDATE PROC_ON_GAME_UPDATE ; 
-typedef void (*ON_GAME_EVENT)(void*,int); 
+typedef void (*ON_GAME_EVENT)(void*); 
 static ON_GAME_EVENT PROC_ON_GAME_EVENT ; 
 typedef void (*ON_GAME_FINALIZE)(void*); 
 static ON_GAME_FINALIZE PROC_ON_GAME_FINALIZE ; 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct Engine Engine; // forward declaration
+static Engine* api ; 
 struct Engine {
     SDL_Window* window;
     SDL_GLContext context;
@@ -109,9 +110,7 @@ struct Engine {
     void* gameloader ; 
     void* gamestate ; 
 } ;
-typedef struct api {
-    
-}api ; 
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 bool engine_start(Engine* engine);
@@ -141,6 +140,7 @@ void engine_api(Engine* engine) ;
 /*----------------------------------------------------------------------------------------------------------------------------------------------------*/
 int main(int argc, char *argv[]){
     Engine engine;SDL_zero(engine);
+    api = &engine ; 
     SDL_SetLogOutputFunction(game_engine_logHandler, NULL);SDL_SetLogPriorities(LOG_LEVEL);
     engine.Windowflags =  SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
     engine.width = 392 ; engine.height = 735 ; 
@@ -278,7 +278,7 @@ int engine_run(Engine* engine) {
 void engine_eventHandler(Engine* engine ){
     SDL_Event e = engine->event ; 
     // process events here 
-    PROC_ON_GAME_EVENT(engine->gamestate,e.type) ; 
+    PROC_ON_GAME_EVENT(engine->gamestate) ; 
 }
 //############################################
 int  engine_started(Engine* engine ){
@@ -290,11 +290,11 @@ int  engine_started(Engine* engine ){
         return -1 ; 
     }
     engine->gamestate = NULL ;
-
     PROC_ON_GAME_CREATED =  (ON_GAME_CREATED)dlsym(engine->gameloader, "on_game_created") ; 
     if(!PROC_ON_GAME_CREATED){printError("%s\n", dlerror());}else{
         engine->gamestate = PROC_ON_GAME_CREATED() ;
     }
+    engine_api(engine);
     PROC_ON_GAME_INIT =  (ON_GAME_INIT)dlsym(engine->gameloader, "on_game_init") ; 
     if(!PROC_ON_GAME_INIT){printError("%s\n", dlerror());}else{
         PROC_ON_GAME_INIT(engine->gamestate) ; 
@@ -327,10 +327,22 @@ void on_engine_swaped(Engine* engine ){
     printInfo("on_engine_swaped  ..\n") ; 
 }
 //############################################
-void get_window_size(Engine* engine, int* w , int h ){
-    SDL_GetWindowSize(engine->window, &w, &h);
+
+void get_window_size(int* w, int* h) {
+    SDL_GetWindowSize(api->window, w, h);
 }
 void engine_api(Engine* engine){
+    void (**lib_get_window_size)(int*, int*) = 
+        (void (**)(int*, int*))dlsym(engine->gameloader, "get_window_size_ptr");
+
+    if (!lib_get_window_size) {
+        fprintf(stderr, "dlsym failed: %s\n", dlerror());
+        return 1;
+    }
+
+
+    *lib_get_window_size = get_window_size;
+
     
 }
 //############################################
