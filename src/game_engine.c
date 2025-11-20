@@ -17,6 +17,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <string.h>
+#include "common.h"
 
 // SDL3 headers for windowing, OpenGL ES, and events
 #include <SDL3/SDL.h>
@@ -80,13 +81,7 @@ void game_engine_logHandler(void *userdata, int category, SDL_LogPriority priori
     }
 }
 
-/*---------------------------
-   Vector Structs
----------------------------*/
-typedef struct { float x, y, z, w; } Vec4f;
-typedef struct { float x, y, z; } Vec3f;
-typedef struct { float x, y, z, w; } Vec4i;
-typedef struct { float x, y, z; } Vec3i;
+
 
 /*---------------------------
    Game Function Pointers

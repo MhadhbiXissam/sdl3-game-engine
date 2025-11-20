@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "common.h"
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -17,6 +18,7 @@ void (*minimize_window)(void) = NULL;
 void (*restore_window)(void) = NULL;
 void (*raise_window)(void) = NULL;
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 typedef struct {
     int h , w  ; 
     int c ; 
@@ -30,6 +32,7 @@ void on_game_created(void* game ){
     set_game_title("issam super game ");
     get_window_size(&(self->w), &(self->h)) ; 
     set_window_size(self->w + 100 , self->h+5) ; 
+
     self->c = 0 ; 
 
 }
@@ -50,7 +53,7 @@ void on_game_update(void* game) {
     Game* self = (Game*)game;
     self->c+= 5;
     if (self->c > 120 ){
-        hide_window();
+
     }
     else{
 
