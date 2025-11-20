@@ -80,14 +80,16 @@ typedef struct {
 /*............................................................*/
 
 
-typedef struct GameState GameState;
-typedef GameState* (*ON_GAME_STARTED)(void);
-static ON_GAME_STARTED PROC_ON_GAME_STARTED ; 
-typedef void (*ON_GAME_UPDATE)(GameState*); 
+
+typedef void* (*ON_GAME_CREATED)(void);
+static ON_GAME_CREATED PROC_ON_GAME_CREATED ; 
+typedef void (*ON_GAME_INIT)(void*);
+static ON_GAME_INIT PROC_ON_GAME_INIT ; 
+typedef void (*ON_GAME_UPDATE)(void*); 
 static ON_GAME_UPDATE PROC_ON_GAME_UPDATE ; 
-typedef void (*ON_GAME_EVENT)(GameState*,int); 
+typedef void (*ON_GAME_EVENT)(void*,int); 
 static ON_GAME_EVENT PROC_ON_GAME_EVENT ; 
-typedef void (*ON_GAME_FINALIZE)(GameState*); 
+typedef void (*ON_GAME_FINALIZE)(void*); 
 static ON_GAME_FINALIZE PROC_ON_GAME_FINALIZE ; 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct Engine Engine; // forward declaration
@@ -105,9 +107,11 @@ struct Engine {
     void (*on_engine_swaped)(Engine*) ;  // call this method before swap
     Vec4f clearcolor ; 
     void* gameloader ; 
-    GameState* gamestate ; 
+    void* gamestate ; 
 } ;
-
+typedef struct api {
+    
+}api ; 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 bool engine_start(Engine* engine);
@@ -130,7 +134,7 @@ void on_engine_closed(Engine* engine );
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 void on_engine_swaped(Engine* engine ); 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
-
+void engine_api(Engine* engine) ; 
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 /*++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -287,10 +291,13 @@ int  engine_started(Engine* engine ){
     }
     engine->gamestate = NULL ;
 
-    PROC_ON_GAME_STARTED =  (ON_GAME_STARTED)dlsym(engine->gameloader, "on_game_started") ; 
-    if(!PROC_ON_GAME_STARTED){printError("%s\n", dlerror());}else{
-        engine->gamestate = PROC_ON_GAME_STARTED() ;
-
+    PROC_ON_GAME_CREATED =  (ON_GAME_CREATED)dlsym(engine->gameloader, "on_game_created") ; 
+    if(!PROC_ON_GAME_CREATED){printError("%s\n", dlerror());}else{
+        engine->gamestate = PROC_ON_GAME_CREATED() ;
+    }
+    PROC_ON_GAME_INIT =  (ON_GAME_INIT)dlsym(engine->gameloader, "on_game_init") ; 
+    if(!PROC_ON_GAME_INIT){printError("%s\n", dlerror());}else{
+        PROC_ON_GAME_INIT(engine->gamestate) ; 
     }
     PROC_ON_GAME_UPDATE = (ON_GAME_UPDATE)dlsym(engine->gameloader, "on_game_update") ; 
     if(!PROC_ON_GAME_UPDATE){printError("%s\n", dlerror());}
@@ -298,7 +305,7 @@ int  engine_started(Engine* engine ){
     if(!PROC_ON_GAME_FINALIZE){printError("%s\n", dlerror());}
     PROC_ON_GAME_EVENT = (ON_GAME_EVENT)dlsym(engine->gameloader, "on_game_event") ; 
     if(!PROC_ON_GAME_EVENT){printError("%s\n", dlerror());}
-    printDebug("here--------------");
+    printDebug("creating game sys ");
     return 0 ; 
 }
 //############################################
@@ -310,8 +317,6 @@ void engine_draw(Engine* engine ){
 }
 //############################################
 void on_engine_closed(Engine* engine ){
-    typedef void (*ON_GAME_FINALIZE)(GameState*);
-    //engine->gamestate = (GameState*)engine->gamestate ;
     PROC_ON_GAME_FINALIZE(engine->gamestate) ;
     if(engine->gameloader){
         dlclose(engine->gameloader);
@@ -322,7 +327,12 @@ void on_engine_swaped(Engine* engine ){
     printInfo("on_engine_swaped  ..\n") ; 
 }
 //############################################
-
+void get_window_size(Engine* engine, int* w , int h ){
+    SDL_GetWindowSize(engine->window, &w, &h);
+}
+void engine_api(Engine* engine){
+    
+}
 //############################################
 
 //############################################
