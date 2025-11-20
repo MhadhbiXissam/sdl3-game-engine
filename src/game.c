@@ -5,6 +5,7 @@ typedef struct Engine Engine; // forward declaration
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 void (*get_window_size)(int*, int*) = NULL;
+void (*set_game_title)(const char* ) = NULL ; 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct {
     int id ; 
@@ -20,6 +21,7 @@ void on_game_created(void* game ){
 }
 
 void on_game_init(void* game){
+    set_game_title("issam super game ");
     printf("Game intialzed ..."); 
 }
 

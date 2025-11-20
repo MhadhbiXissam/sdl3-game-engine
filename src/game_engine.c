@@ -1,9 +1,9 @@
 // Enable GNU extensions for advanced features
 #define _GNU_SOURCE
 // Macro to bind a function pointer from a dynamic library with explicit type
-#define BIND_LIB_FUNC_TYPED(lib_handle, func_ptr, func_name, type) \
+#define BIND_LIB_FUNC_TYPED(func_ptr, func_name, type) \
     do {                                                           \
-        type *tmp = (type *)dlsym(lib_handle, func_name);          \
+        type *tmp = (type *)dlsym(api->gameloader, func_name);          \
         if (!tmp) {                                                \
             fprintf(stderr, "dlsym failed: %s\n", dlerror());     \
             return;                                                \
@@ -329,13 +329,19 @@ void on_engine_swaped(void){ printInfo("on_engine_swaped .."); }
 void get_window_size(int* w, int* h){ 
     SDL_GetWindowSize(api->window, w, h); 
 }
+void set_game_title(const char* title ){
+    SDL_SetWindowTitle(api->window,title) ; 
+}
 
 /*---------------------------
    Expose Engine API to Game Library
 ---------------------------*/
+
 void engine_api(void){
-    typedef void (*GetWindowSizeFunc)(int*, int*);
-    BIND_LIB_FUNC_TYPED(api->gameloader, get_window_size, "get_window_size", GetWindowSizeFunc);
+    typedef void (*proc_get_window_size)(int*, int*);
+    BIND_LIB_FUNC_TYPED(get_window_size, "get_window_size", proc_get_window_size);
+    typedef void (*proc_set_game_title)(const char* );
+    BIND_LIB_FUNC_TYPED(set_game_title, "set_game_title", proc_get_window_size);
 
 
 }
