@@ -92,7 +92,7 @@ typedef struct { float x, y, z; } Vec3i;
    Game Function Pointers
    Loaded dynamically from a game library
 ---------------------------*/
-typedef void* (*ON_GAME_CREATED)(void);
+typedef void (*ON_GAME_CREATED)(void*);
 typedef void  (*ON_GAME_INIT)(void*);
 typedef void  (*ON_GAME_UPDATE)(void*);
 typedef void  (*ON_GAME_EVENT)(void*);
@@ -296,12 +296,12 @@ int engine_started(void){
     }
 
     api->gamestate = NULL;
-
+    engine_api(); // set API callbacks
     // Load game functions dynamically
     PROC_ON_GAME_CREATED = (ON_GAME_CREATED)dlsym(api->gameloader, "on_game_created");
-    if (PROC_ON_GAME_CREATED) api->gamestate = PROC_ON_GAME_CREATED();
+    if (PROC_ON_GAME_CREATED) PROC_ON_GAME_CREATED(api->gamestate);
 
-    engine_api(); // set API callbacks
+
 
     PROC_ON_GAME_INIT = (ON_GAME_INIT)dlsym(api->gameloader, "on_game_init");
     if (PROC_ON_GAME_INIT) PROC_ON_GAME_INIT(api->gamestate);
@@ -324,24 +324,98 @@ void on_engine_closed(void){
 void on_engine_swaped(void){ printInfo("on_engine_swaped .."); }
 
 /*---------------------------
-   Window Size Utility
+   Window Utilities
 ---------------------------*/
 void get_window_size(int* w, int* h){ 
     SDL_GetWindowSize(api->window, w, h); 
 }
-void set_game_title(const char* title ){
-    SDL_SetWindowTitle(api->window,title) ; 
+
+void set_window_size(int w, int h){
+    SDL_SetWindowSize(api->window, w, h);
+}
+
+void get_window_position(int* x, int* y){
+    SDL_GetWindowPosition(api->window, x, y);
+}
+
+void set_window_position(int x, int y){
+    SDL_SetWindowPosition(api->window, x, y);
+}
+
+void set_game_title(const char* title){
+    SDL_SetWindowTitle(api->window, title); 
+}
+
+void show_window(void){
+    SDL_ShowWindow(api->window);
+}
+
+void hide_window(void){
+    SDL_HideWindow(api->window);
+}
+
+void maximize_window(void){
+    SDL_MaximizeWindow(api->window);
+}
+
+void minimize_window(void){
+    SDL_MinimizeWindow(api->window);
+}
+
+void restore_window(void){
+    SDL_RestoreWindow(api->window);
+}
+
+void raise_window(void){
+    SDL_RaiseWindow(api->window);
 }
 
 /*---------------------------
    Expose Engine API to Game Library
 ---------------------------*/
-
 void engine_api(void){
+    // get_window_size
     typedef void (*proc_get_window_size)(int*, int*);
     BIND_LIB_FUNC_TYPED(get_window_size, "get_window_size", proc_get_window_size);
-    typedef void (*proc_set_game_title)(const char* );
-    BIND_LIB_FUNC_TYPED(set_game_title, "set_game_title", proc_get_window_size);
 
+    // set_window_size
+    typedef void (*proc_set_window_size)(int, int);
+    BIND_LIB_FUNC_TYPED(set_window_size, "set_window_size", proc_set_window_size);
 
+    // get_window_position
+    typedef void (*proc_get_window_position)(int*, int*);
+    BIND_LIB_FUNC_TYPED(get_window_position, "get_window_position", proc_get_window_position);
+
+    // set_window_position
+    typedef void (*proc_set_window_position)(int, int);
+    BIND_LIB_FUNC_TYPED(set_window_position, "set_window_position", proc_set_window_position);
+
+    // set_game_title
+    typedef void (*proc_set_game_title)(const char*);
+    BIND_LIB_FUNC_TYPED(set_game_title, "set_game_title", proc_set_game_title);
+
+    // show_window
+    typedef void (*proc_show_window)(void);
+    BIND_LIB_FUNC_TYPED(show_window, "show_window", proc_show_window);
+
+    // hide_window
+    typedef void (*proc_hide_window)(void);
+    BIND_LIB_FUNC_TYPED(hide_window, "hide_window", proc_hide_window);
+
+    // maximize_window
+    typedef void (*proc_maximize_window)(void);
+    BIND_LIB_FUNC_TYPED(maximize_window, "maximize_window", proc_maximize_window);
+
+    // minimize_window
+    typedef void (*proc_minimize_window)(void);
+    BIND_LIB_FUNC_TYPED(minimize_window, "minimize_window", proc_minimize_window);
+
+    // restore_window
+    typedef void (*proc_restore_window)(void);
+    BIND_LIB_FUNC_TYPED(restore_window, "restore_window", proc_restore_window);
+
+    // raise_window
+    typedef void (*proc_raise_window)(void);
+    BIND_LIB_FUNC_TYPED(raise_window, "raise_window", proc_raise_window);
 }
+

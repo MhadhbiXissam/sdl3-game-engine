@@ -1,14 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-typedef struct Engine Engine; // forward declaration
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Function pointers exposed to the game library */
 void (*get_window_size)(int*, int*) = NULL;
-void (*set_game_title)(const char* ) = NULL ; 
+void (*set_window_size)(int, int) = NULL;
+void (*get_window_position)(int*, int*) = NULL;
+void (*set_window_position)(int, int) = NULL;
+void (*set_game_title)(const char*) = NULL;
+void (*show_window)(void) = NULL;
+void (*hide_window)(void) = NULL;
+void (*maximize_window)(void) = NULL;
+void (*minimize_window)(void) = NULL;
+void (*restore_window)(void) = NULL;
+void (*raise_window)(void) = NULL;
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct {
-    int id ; 
+    int h , w  ; 
 }Game ; 
 
 
@@ -16,13 +26,16 @@ typedef struct {
 
 void on_game_created(void* game ){
     game =  (Game*)malloc(sizeof(Game));Game* self = (Game*)game ; 
-    printf("game created...\n");
-    self->id = 120 ;
+    set_game_title("issam super game ");
+    get_window_size(&(self->w), &(self->h)) ; 
+    set_window_size(self->w + 100 , self->h+5) ; 
+
 }
 
 void on_game_init(void* game){
-    set_game_title("issam super game ");
+
     printf("Game intialzed ..."); 
+    maximize_window();
 }
 
 void on_game_event(void* game){
@@ -30,13 +43,11 @@ void on_game_event(void* game){
 }
 
 
-void on_game_update(void* game ){
-    Game* self = (Game*)game ; 
-    self->id += 1 ;
-    printf("game updating game.id...%i.\n",self->id); 
-    int w , h ; 
-    get_window_size(&w,&h);
-    printf("the window size : w = ...%i.\n",w); 
+void on_game_update(void* game) {
+    if (!game) return; // prevent crash
+    Game* self = (Game*)game;
+    self->w += 5;
+
 }
 
 
