@@ -4,7 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "gcc -Wall -fPIC -shared src/game.c -o src/libgame.so && gcc -w src/game_engine.c   -I. libs/libSDL3.a  -lm -lGLESv2 -o build/game.out && ./build/game.out ",
+            "command": "make build",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

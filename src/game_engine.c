@@ -19,6 +19,7 @@
 #include <string.h>
 #include "common.h"
 
+
 // SDL3 headers for windowing, OpenGL ES, and events
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -82,6 +83,10 @@ void game_engine_logHandler(void *userdata, int category, SDL_LogPriority priori
 }
 
 
+/*---------------------------
+   Game Camera class 
+---------------------------*/
+
 
 /*---------------------------
    Game Function Pointers
@@ -92,12 +97,15 @@ typedef void  (*ON_GAME_INIT)(void*);
 typedef void  (*ON_GAME_UPDATE)(void*);
 typedef void  (*ON_GAME_EVENT)(void*);
 typedef void  (*ON_GAME_FINALIZE)(void*);
+typedef void  (*ON_NIM_MAIN)(void);
 
-static ON_GAME_CREATED PROC_ON_GAME_CREATED;
-static ON_GAME_INIT    PROC_ON_GAME_INIT;
-static ON_GAME_UPDATE  PROC_ON_GAME_UPDATE;
-static ON_GAME_EVENT   PROC_ON_GAME_EVENT;
+
+static ON_GAME_CREATED  PROC_ON_GAME_CREATED;
+static ON_GAME_INIT     PROC_ON_GAME_INIT;
+static ON_GAME_UPDATE   PROC_ON_GAME_UPDATE;
+static ON_GAME_EVENT    PROC_ON_GAME_EVENT;
 static ON_GAME_FINALIZE PROC_ON_GAME_FINALIZE;
+static ON_NIM_MAIN      PROC_ON_NIM_MAIN;
 
 /*---------------------------
    Engine Structure
@@ -291,6 +299,11 @@ int engine_started(void){
     }
 
     api->gamestate = NULL;
+    PROC_ON_NIM_MAIN = (ON_NIM_MAIN)dlsym(api->gameloader, "NimMain");
+    if (PROC_ON_NIM_MAIN) {
+        printDebug("NimMain has been detected ");
+        PROC_ON_NIM_MAIN();
+    }
     engine_api(); // set API callbacks
     // Load game functions dynamically
     PROC_ON_GAME_CREATED = (ON_GAME_CREATED)dlsym(api->gameloader, "on_game_created");

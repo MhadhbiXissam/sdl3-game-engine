@@ -1,0 +1,48 @@
+{
+  "cacheVersion": "D20210525T193831",
+  "outputFile": "/home/issam/Desktop/workspace/tests/nim-call-c/libe.so",
+  "compile": [
+    [
+      "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem.nim.c",
+      "gcc -c  -w -fmax-errors=3 -pthread -O3 -fno-strict-aliasing -fno-ident -fno-math-errno  -fPIC  -I/home/issam/.choosenim/toolchains/nim-2.0.0/lib -I/home/issam/Desktop/workspace/tests/nim-call-c -o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem.nim.c"
+    ],
+    [
+      "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@me.nim.c",
+      "gcc -c  -w -fmax-errors=3 -pthread -O3 -fno-strict-aliasing -fno-ident -fno-math-errno  -fPIC  -I/home/issam/.choosenim/toolchains/nim-2.0.0/lib -I/home/issam/Desktop/workspace/tests/nim-call-c -o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@me.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@me.nim.c"
+    ]
+  ],
+  "link": [
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem@sexceptions.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem@sctypes.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@sstd@sprivate@sdigitsutils.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@sstd@sassertions.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem@sdollars.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@sstd@stypedthreads.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@scollections@ssharedlist.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@shashes.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@smath.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@scollections@stables.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sparseutils.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sunicode.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sstrutils.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sstreams.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@slexbase.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sparsejson.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sjson.nim.c.o",
+    "/home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@me.nim.c.o"
+  ],
+  "linkcmd": "gcc   -shared -o /home/issam/Desktop/workspace/tests/nim-call-c/libe.so /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem@sexceptions.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem@sctypes.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@sstd@sprivate@sdigitsutils.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@sstd@sassertions.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem@sdollars.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@sstd@stypedthreads.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@scollections@ssharedlist.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@ssystem.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@shashes.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@smath.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@scollections@stables.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sparseutils.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sunicode.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sstrutils.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sstreams.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@slexbase.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sparsejson.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@m..@s..@s..@s..@s.choosenim@stoolchains@snim-2.0.0@slib@spure@sjson.nim.c.o /home/issam/Desktop/workspace/tests/nim-call-c/libsrc/@me.nim.c.o  -pthread -pthread -lm -lm   -ldl",
+  "extraCmds": [],
+  "configFiles": [
+    "/home/issam/.choosenim/toolchains/nim-2.0.0/config/nim.cfg",
+    "/home/issam/.choosenim/toolchains/nim-2.0.0/config/config.nims"
+  ],
+  "stdinInput": false,
+  "projectIsCmd": false,
+  "cmdInput": "",
+  "currentDir": "/home/issam/Desktop/workspace/tests/nim-call-c",
+  "cmdline": "",
+  "depfiles": [],
+  "nimexe": ""
+}
