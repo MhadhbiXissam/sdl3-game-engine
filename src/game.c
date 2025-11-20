@@ -4,7 +4,7 @@
 typedef struct Engine Engine; // forward declaration
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-void (*get_window_size_ptr)(int*, int*) = NULL;
+void (*get_window_size)(int*, int*) = NULL;
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct {
     int id ; 
@@ -12,8 +12,7 @@ typedef struct {
 
 
 
-// this will be used to create the game and keep memeror of owned by game 
-// will be used to pass argument from game to engine 
+
 void on_game_created(void* game ){
     game =  (Game*)malloc(sizeof(Game));Game* self = (Game*)game ; 
     printf("game created...\n");
@@ -34,7 +33,7 @@ void on_game_update(void* game ){
     self->id += 1 ;
     printf("game updating game.id...%i.\n",self->id); 
     int w , h ; 
-    get_window_size_ptr(&w,&h);
+    get_window_size(&w,&h);
     printf("the window size : w = ...%i.\n",w); 
 }
 
