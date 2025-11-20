@@ -19,6 +19,7 @@ void (*raise_window)(void) = NULL;
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 typedef struct {
     int h , w  ; 
+    int c ; 
 }Game ; 
 
 
@@ -29,6 +30,7 @@ void on_game_created(void* game ){
     set_game_title("issam super game ");
     get_window_size(&(self->w), &(self->h)) ; 
     set_window_size(self->w + 100 , self->h+5) ; 
+    self->c = 0 ; 
 
 }
 
@@ -46,7 +48,15 @@ void on_game_event(void* game){
 void on_game_update(void* game) {
     if (!game) return; // prevent crash
     Game* self = (Game*)game;
-    self->w += 5;
+    self->c+= 5;
+    if (self->c > 120 ){
+        hide_window();
+    }
+    else{
+
+            show_window();
+    }
+
 
 }
 
