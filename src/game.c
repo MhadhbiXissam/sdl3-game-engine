@@ -46,12 +46,12 @@ void on_game_init(void* game){
     maximize_window();
 }
 
-void on_game_event(void* game){
+void on_game_event(void** game){
 
 }
 
 
-void on_game_update(void* game) {
+void on_game_update(void** game) {
 
     Game* self = (Game*)game;
     self->c+= 5;
@@ -61,8 +61,12 @@ void on_game_update(void* game) {
 }
 
 
-void on_game_finalize(void* game ){
-    free(game) ; 
-    printf("game final "); 
+
+void on_game_finalize(void** game ){
+    if (game && *game) {
+        free(*game);      // free the actual allocation
+        *game = NULL;     // avoid dangling pointer
+    }
+    printf("game final");
 }
 

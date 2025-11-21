@@ -7,7 +7,7 @@
         if (!tmp) {                                                \
             fprintf(stderr, "dlsym failed: %s\n", dlerror());     \
             return;                                                \
-        }                                                          \
+        } \
         *tmp = func_ptr;                                           \
     } while(0)
 
@@ -26,7 +26,7 @@
 #include <SDL3/SDL_opengles2.h>
 
 // Logging configuration
-#define LOG_LEVEL SDL_LOG_PRIORITY_DEBUG
+#define LOG_LEVEL SDL_LOG_PRIORITY_ERROR
 #define printInfo(msg, ...)  SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
 #define printWarn(msg, ...)  SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
 #define printError(msg, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
