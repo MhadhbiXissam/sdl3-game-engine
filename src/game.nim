@@ -1,5 +1,5 @@
 var
-  get_window_size*: proc (w: var cint, h: var cint) : void  = nil 
+  get_window_size* {.exportc,dynlib.}: proc (w: var cint, h: var cint) : void  = nil 
   set_window_size*: proc (w: cint, h: cint) {.cdecl.} = nil
   get_window_position*: proc (x: ptr cint, y: ptr cint) {.cdecl.} = nil
   set_window_position*: proc (x: cint, y: cint) {.cdecl.} = nil
@@ -14,17 +14,22 @@ var
 
 
 type
-  Game* =  object
+  Game* = ref object
     w*: cint
     h*: cint
     c*: cint
 
-proc on_game_created*(game: var  pointer) {.exportc,dynlib.}  =
-    echo ".............."
-    game= cast[ptr Game](alloc(sizeof(Game)))
+proc on_game_created*(game: var Game) {.exportc,dynlib.}  =
+    game = new Game
+    game.c = 150
+    GC_ref(game)
+    # game = cast[ptr Game](alloc(sizeof(Game)))
+    # # game[].c = 120
 
 
-
+proc on_game_update*(game: var Game) {.exportc,dynlib.}  =
+    game.c += 10
+    echo $(game.c)
 
 
 

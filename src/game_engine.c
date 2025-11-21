@@ -373,7 +373,7 @@ int engine_run(void){
 /*---------------------------
    Game Engine Callbacks
 ---------------------------*/
-void engine_eventHandler(void){ if(PROC_ON_GAME_EVENT) PROC_ON_GAME_EVENT(api->gamestate); }
+void engine_eventHandler(void){ if(PROC_ON_GAME_EVENT) PROC_ON_GAME_EVENT(&api->gamestate); }
 
 int engine_started(void){
     printInfo("engine_started ..");
@@ -395,12 +395,12 @@ int engine_started(void){
     engine_api(); // set API callbacks
     // Load game functions dynamically
     PROC_ON_GAME_CREATED = (ON_GAME_CREATED)dlsym(api->gameloader, "on_game_created");
-    if (PROC_ON_GAME_CREATED) PROC_ON_GAME_CREATED(api->gamestate);
+    if (PROC_ON_GAME_CREATED) PROC_ON_GAME_CREATED(&api->gamestate);
 
 
 
     PROC_ON_GAME_INIT = (ON_GAME_INIT)dlsym(api->gameloader, "on_game_init");
-    if (PROC_ON_GAME_INIT) PROC_ON_GAME_INIT(api->gamestate);
+    if (PROC_ON_GAME_INIT) PROC_ON_GAME_INIT(&api->gamestate);
 
     PROC_ON_GAME_UPDATE = (ON_GAME_UPDATE)dlsym(api->gameloader, "on_game_update");
     PROC_ON_GAME_FINALIZE = (ON_GAME_FINALIZE)dlsym(api->gameloader, "on_game_finalize");
@@ -410,10 +410,16 @@ int engine_started(void){
     return 0;
 }
 
-void engine_draw(void){ if (PROC_ON_GAME_UPDATE) PROC_ON_GAME_UPDATE(api->gamestate); }
+void engine_draw(void){ 
+    if (PROC_ON_GAME_UPDATE){ 
+        PROC_ON_GAME_UPDATE(&api->gamestate); 
+    }else{
+    printError("could not load on_game_update !!!") ; 
+    }
+}
 
 void on_engine_closed(void){
-    if(PROC_ON_GAME_FINALIZE) PROC_ON_GAME_FINALIZE(api->gamestate);
+    if(PROC_ON_GAME_FINALIZE) PROC_ON_GAME_FINALIZE(&api->gamestate);
     if(api->gameloader) dlclose(api->gameloader);
 }
 

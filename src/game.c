@@ -31,14 +31,14 @@ typedef struct {
 
 
 
-void on_game_created(void* game ){
-    game =  (Game*)malloc(sizeof(Game));Game* self = (Game*)game ; 
-    set_game_title("issam super game ");
-    get_window_size(&(self->w), &(self->h)) ; 
-    set_window_size(self->w + 100 , self->h+5) ; 
-
-    self->c = 0 ; 
-
+void on_game_created(void** game_ptr) {
+    *game_ptr = malloc(sizeof(Game));
+    Game* self = (Game*)(*game_ptr);
+    
+    set_game_title("issam super game");
+    get_window_size(&(self->w), &(self->h));
+    set_window_size(self->w + 100, self->h + 5);
+    self->c = 0;
 }
 
 void on_game_init(void* game){
@@ -52,16 +52,10 @@ void on_game_event(void* game){
 
 
 void on_game_update(void* game) {
-    if (!game) return; // prevent crash
+
     Game* self = (Game*)game;
     self->c+= 5;
-    if (self->c > 120 ){
-
-    }
-    else{
-
-            show_window();
-    }
+    printf("c = %i" , self->c);
 
 
 }
