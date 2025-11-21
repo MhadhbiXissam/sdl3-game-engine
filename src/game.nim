@@ -1,4 +1,4 @@
-
+import nimpy 
 {.emit: """
 #include "common.h"
 Vec2i (*get_window_size)(void) = NULL;
@@ -52,6 +52,8 @@ proc on_game_created*(game: var Game) {.exportc,dynlib.}  =
 proc on_game_update*(game: var Game) {.exportc,dynlib.}  =
     game.c += 10
     echo "c = " , game.c
+    let os = pyImport("os")
+    echo "Current dir is: ", os.getcwd().to(string)
 
 
 proc on_game_event*(game: var Game) {.exportc,dynlib.} =

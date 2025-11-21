@@ -7,7 +7,7 @@ clang-engine :
 
 
 nimlang-engine : 
-	nim c --exceptions:quirky -d:release --os:any --mm:arc -d:useMalloc -d:useMalloc --noMain --app:lib  --passC:"-fPIC" -o:src/libgame.so src/game.nim
+	nim c --exceptions:quirky -d:release --os:linux --mm:arc -d:useMalloc -d:useMalloc --noMain --app:lib  --passC:"-fPIC" -o:src/libgame.so src/game.nim
 	gcc -w src/game_engine.c   -I. libs/libSDL3.a  -lm -lGLESv2 -o build/game.out && ./build/game.out
 
 build : nimlang-engine 
