@@ -31,15 +31,16 @@ typedef struct {
 
 
 
-void on_game_created(void** game_ptr) {
-    *game_ptr = malloc(sizeof(Game));
-    Game* self = (Game*)(*game_ptr);
-    
+void on_game_created(Game** game) {
+    *game = malloc(sizeof(Game)); Game* self = (Game*)(*game);
     set_game_title("issam super game");
     get_window_size(&(self->w), &(self->h));
     set_window_size(self->w + 100, self->h + 5);
     self->c = 0;
 }
+
+
+
 
 void on_game_init(void* game){
     printf("Game intialzed ..."); 
