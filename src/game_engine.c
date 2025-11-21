@@ -5,10 +5,12 @@
     do {                                                           \
         type *tmp = (type *)dlsym(api->gameloader, func_name);          \
         if (!tmp) {                                                \
-            fprintf(stderr, "dlsym failed: %s\n", dlerror());     \
-            return;                                                \
+            printError("dlsym failed: %s\n", dlerror()) ;    \
+            printError("Function  <%s> did not been displatched ",func_name) ;\
+            return;                                              \
         } \
-        *tmp = func_ptr;                                           \
+        *tmp = func_ptr;  \
+        printInfo("Function <%s> had been displatched .",func_name)  ;                                       \
     } while(0)
 
 // Standard headers
@@ -26,7 +28,7 @@
 #include <SDL3/SDL_opengles2.h>
 
 // Logging configuration
-#define LOG_LEVEL SDL_LOG_PRIORITY_ERROR
+#define LOG_LEVEL SDL_LOG_PRIORITY_DEBUG
 #define printInfo(msg, ...)  SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
 #define printWarn(msg, ...)  SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
 #define printError(msg, ...) SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, msg, ##__VA_ARGS__)
@@ -236,7 +238,7 @@ void engine_draw(void);
 void on_engine_closed(void);
 void on_engine_swaped(void);
 void engine_api(void);
-void get_window_size(int* w, int* h);
+
 
 /*---------------------------
    Main Entry Point
@@ -424,24 +426,28 @@ void on_engine_closed(void){
 }
 
 void on_engine_swaped(void){ printInfo("on_engine_swaped .."); }
-
 /*---------------------------
    Window Utilities
 ---------------------------*/
-void get_window_size(int* w, int* h){ 
-    SDL_GetWindowSize(api->window, w, h); 
+
+Vec2i get_window_size() {
+    Vec2i v;
+    SDL_GetWindowSize(api->window, &v.x, &v.y);
+    return v;
 }
 
-void set_window_size(int w, int h){
-    SDL_SetWindowSize(api->window, w, h);
+void set_window_size(Vec2i v) {
+    SDL_SetWindowSize(api->window, v.x, v.y);
 }
 
-void get_window_position(int* x, int* y){
-    SDL_GetWindowPosition(api->window, x, y);
+Vec2i get_window_position() {
+    Vec2i v;
+    SDL_GetWindowPosition(api->window, &v.x, &v.y);
+    return v;
 }
 
-void set_window_position(int x, int y){
-    SDL_SetWindowPosition(api->window, x, y);
+void set_window_position(Vec2i v) {
+    SDL_SetWindowPosition(api->window, v.x, v.y);
 }
 
 void set_game_title(const char* title){
@@ -477,19 +483,19 @@ void raise_window(void){
 ---------------------------*/
 void engine_api(void){
     // get_window_size
-    typedef void (*proc_get_window_size)(int*, int*);
+    typedef Vec2i (*proc_get_window_size)(void);
     BIND_LIB_FUNC_TYPED(get_window_size, "get_window_size", proc_get_window_size);
 
     // set_window_size
-    typedef void (*proc_set_window_size)(int, int);
+    typedef void (*proc_set_window_size)(Vec2i);
     BIND_LIB_FUNC_TYPED(set_window_size, "set_window_size", proc_set_window_size);
 
     // get_window_position
-    typedef void (*proc_get_window_position)(int*, int*);
+    typedef Vec2i (*proc_get_window_position)(void);
     BIND_LIB_FUNC_TYPED(get_window_position, "get_window_position", proc_get_window_position);
 
     // set_window_position
-    typedef void (*proc_set_window_position)(int, int);
+    typedef void (*proc_set_window_position)(Vec2i);
     BIND_LIB_FUNC_TYPED(set_window_position, "set_window_position", proc_set_window_position);
 
     // set_game_title
@@ -520,4 +526,3 @@ void engine_api(void){
     typedef void (*proc_raise_window)(void);
     BIND_LIB_FUNC_TYPED(raise_window, "raise_window", proc_raise_window);
 }
-

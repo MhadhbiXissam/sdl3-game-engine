@@ -3,8 +3,10 @@
 #include <stdlib.h>
 
 // ======== Vector Types ========
+typedef struct { float x, y; } Vec2f;
 typedef struct { float x, y, z; } Vec3f;
 typedef struct { float x, y, z, w; } Vec4f;
+typedef struct { int x, y; } Vec2i;
 typedef struct { int x, y, z; } Vec3i;
 typedef struct { int x, y, z, w; } Vec4i;
 
