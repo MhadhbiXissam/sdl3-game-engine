@@ -260,7 +260,7 @@ int main(int argc, char *argv[]){
     engine_instance.draw = engine_draw;
     engine_instance.on_engine_closed = on_engine_closed;
     engine_instance.on_engine_swaped = on_engine_swaped;
-    engine_instance.clearcolor = (Vec4f){1.0, 0.6, 0.6, 1.0};
+    engine_instance.clearcolor = (Vec4f){38.0/255.0, 38.0/255.0, 38.0/255.0, 1.0};
 
     return engine_run();
 }

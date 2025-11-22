@@ -25,7 +25,11 @@ void (*raise_window)(void) = NULL;
 
 typedef struct {
     void* camera;
-} Camera;
+    int typ ; 
+    void* parent ; 
+    void** childs ; 
+    int len ; 
+} Entity;
 
 typedef struct {
     int h, w;
@@ -69,7 +73,7 @@ void on_game_update(void** game) {
 
     Game* self = *game;   // FIX: correct dereference
     self->w += 1;self->h += 1 ; 
-    set_window_size((Vec2i){ self->w , self->h });
+    // set_window_size((Vec2i){ self->w , self->h });
 
 
     printf("c = %d", self->c);
