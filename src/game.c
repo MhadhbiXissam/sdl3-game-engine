@@ -54,7 +54,7 @@ void on_game_created(Game** game) {
 
 void on_game_init(void* game){
     printf("Game initialized ...");
-    maximize_window();
+    //maximize_window();
 }
 
 
@@ -68,7 +68,9 @@ void on_game_event(void** game){
 void on_game_update(void** game) {
 
     Game* self = *game;   // FIX: correct dereference
-    self->c += 5;
+    self->w += 1;self->h += 1 ; 
+    set_window_size((Vec2i){ self->w , self->h });
+
 
     printf("c = %d", self->c);
 }

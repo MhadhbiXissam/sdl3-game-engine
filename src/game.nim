@@ -15,7 +15,7 @@ void (*raise_window)(void) = NULL;
 """.}
 
 type
-  Vec2i {.importc,nodecl.} = object 
+  Vec2i* {.importc,nodecl.} = object 
     x*: cint
     y*: cint
 
@@ -23,6 +23,7 @@ type
     x*: cint
     y*: cint
     c : cint 
+    pos* : Vec2i
 # Function pointer types
 # type
 
@@ -44,16 +45,22 @@ proc on_game_created*(game: var Game) {.exportc,dynlib.}  =
     game = new Game
     game.c = 150
     let s = get_window_size()
-    echo s.x , s.y
+    game.pos = s
     GC_ref(game)
 
 
 
 proc on_game_update*(game: var Game) {.exportc,dynlib.}  =
-    game.c += 10
+    game.pos = Vec2i(x : game.pos.x , y : game.pos.y)
+    set_window_size(game.pos.)
     echo "c = " , game.c
     let os = pyImport("os")
     echo "Current dir is: ", os.getcwd().to(string)
+    # if game.c > 1000 : 
+    #   hide_window()
+    # else : 
+    #   show_window()
+    #   maximize_window()
 
 
 proc on_game_event*(game: var Game) {.exportc,dynlib.} =
@@ -63,6 +70,7 @@ proc on_game_event*(game: var Game) {.exportc,dynlib.} =
 
 
 proc on_game_finalize*(game: var Game) {.exportc,dynlib.} =
+
     GC_ref(game)
 
 
