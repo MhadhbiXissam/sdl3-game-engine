@@ -85,6 +85,7 @@ void game_engine_logHandler(void *userdata, int category, SDL_LogPriority priori
 }
 
 
+
 /*---------------------------
    Game Camera class 
 ---------------------------*/
